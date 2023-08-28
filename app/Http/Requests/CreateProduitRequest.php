@@ -23,12 +23,11 @@ class CreateProduitRequest extends FormRequest
     {
         return [
             'nom'=>['required'],
-            'pathologie_id'=>['required'],
             'pharmacie_id'=>['required'],
             'description'=>['required'],
             'date_fabrication'=>['required'],
             'date_expiration'=>['required'],
-            'quantite_en_stock'=>['required'],
+            'categorie'=>['required'],
             'prix'=>['required'],
  
         ];

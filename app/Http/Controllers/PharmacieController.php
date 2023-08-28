@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreatePharmacieRequest;
 use App\Http\Requests\UpdatePharmacieRequest;
 use App\Models\Pharmacie;
+use App\Tables\ListPharmacies;
 use App\Tables\Pharmacies;
 use Illuminate\Http\Request;
 use App\Tables\Users;
@@ -22,6 +23,12 @@ class PharmacieController extends Controller
     {
         return view('admin.pharmacies.index',[
             'pharmacies' => Pharmacies::class
+        ]);
+    }
+
+    public function afficher(){
+        return view('admin.users.afficher',[
+            'pharmacies' =>ListPharmacies::class
         ]);
     }
 

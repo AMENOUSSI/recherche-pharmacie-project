@@ -35,8 +35,8 @@ Route::middleware('splade')->group(function () {
     // Registers routes to support async File Uploads with Filepond...
     Route::spladeUploads();
 
-    Route::get('/login', function () {
-        return view('login');
+    Route::get('/', function () {
+        return view('welcome');
     });
 
     Route::middleware('auth')->group(function () {
@@ -69,12 +69,17 @@ Route::middleware('splade')->group(function () {
 
     });
 
-    Route::get('/', [AdminController::class, 'index'])->name('admin.index');
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 
     Route::get('/produits', [ProduitController::class, 'index'])->name('produits.index');
 
 
     Route::get('/pharmacies', [PharmacieController::class, 'index'])->name('pharmacies.index');
+
+    Route::get('/', [PharmacieController::class, 'afficher'])->name('pharmacies.public');
+
+
+    Route::get('/produits/user', [ProduitController::class, 'userPage'])->name('produits.user');
 
 
     require __DIR__ . '/auth.php';

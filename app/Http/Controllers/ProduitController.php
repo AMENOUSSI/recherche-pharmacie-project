@@ -7,6 +7,8 @@ use App\Http\Requests\updateProduitRequest;
 use App\Models\Pathologie;
 use App\Models\Pharmacie;
 use App\Models\Produit;
+use App\Tables\ListeProduits;
+use App\Tables\ListTables;
 use App\Tables\Produits;
 use Illuminate\Http\Request;
 use ProtoneMedia\Splade\Facades\Splade;
@@ -23,10 +25,22 @@ class ProduitController extends Controller
      */
     public function index()
     {
-        return view('admin.produits.index',[
+        return view('admin.produits.index', [
             'produits' => Produits::class,
         ]);
     }
+
+    
+
+    public function userPage()
+    {
+        return view('admin.users.userProduit',[
+            'produits' =>ListTables::class
+        ]);
+    }
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -34,28 +48,28 @@ class ProduitController extends Controller
     public function create()
     {
         $form = SpladeForm::make()
-        ->action(route('produits.store'))
-        ->fields([
-                
+            ->action(route('produits.store'))
+            ->fields([
+
                 Input::make('nom')->label('Nom'),
                 Text::make('description')->label('Description'),
                 Input::make('date_fabrication')->label('Date Fabrcation'),
                 Input::make('date_expiration')->label('Date Expiration'),
-                Input::make('categorie')->label('Date Expiration'),
+                Input::make('categorie')->label('Catégorie'),
                 Select::make('pharmacie_id')
-                ->label('Choisir une Pharmacie')
-                ->options(Pharmacie::pluck('nom','id')->toArray()),
+                    ->label('Choisir une Pharmacie')
+                    ->options(Pharmacie::pluck('nom', 'id')->toArray()),
                 Input::make('prix')->label('Prix'),
                 Submit::make()->label('Enrégistrer'),
             ])
-            -> class(" space-y-4 p-4 bg-white rounded-md");
- 
+            ->class(" space-y-4 p-4 bg-white rounded-md");
+
         return view('admin.produits.create', [
             'form' => $form,
-            
+
         ]);
-    
-            
+
+
     }
 
     /**
@@ -66,7 +80,7 @@ class ProduitController extends Controller
         Produit::create($request->validated());
         Splade::toast("Le produit est ajouté avec succès")->autoDismiss(3);
 
-        return to_route(route:'produits.index');
+        return to_route(route: 'produits.index');
     }
 
     /**
@@ -83,9 +97,9 @@ class ProduitController extends Controller
     public function edit(Produit $produit)
     {
         $form = SpladeForm::make()
-        ->action(route('produits.update',$produit))
-        ->fields([
-                
+            ->action(route('produits.update', $produit))
+            ->fields([
+
                 Input::make('nom')->label('Nom'),
                 Text::make('description')->label('Description'),
                 Input::make('date_fabrication')->label('Date Fabrcation'),
@@ -93,18 +107,18 @@ class ProduitController extends Controller
                 Input::make('categorie')->label('Date Expiration'),
                 Input::make('quantite_en_stock')->label('Stock Present'),
                 Select::make('pharmacie_id')
-                ->label('Choisir une Pharmacie')
-                ->options(Pharmacie::pluck('nom','id')->toArray()),
+                    ->label('Choisir une Pharmacie')
+                    ->options(Pharmacie::pluck('nom', 'id')->toArray()),
                 Input::make('prix')->label('Prix'),
                 Submit::make()->label('Enrégistrer'),
             ])->fill($produit)
-            -> class(" space-y-4 p-4 bg-white rounded-md")
+            ->class(" space-y-4 p-4 bg-white rounded-md")
             ->method('PUT');
 
-            return view('produits.edit', [
-                'form' => $form,
-                'produits' => $produit
-            ]);
+        return view('produits.edit', [
+            'form' => $form,
+            'produits' => $produit
+        ]);
     }
 
     /**
@@ -116,7 +130,7 @@ class ProduitController extends Controller
 
         Splade::toast("Le produit mis à jour avec succès")->autoDismiss(3);
 
-        return to_route(route:'produits.index');
+        return to_route(route: 'produits.index');
     }
 
     /**
@@ -128,6 +142,6 @@ class ProduitController extends Controller
 
         Splade::toast("Le produit est supprimé avec succès")->autoDismiss(3);
 
-        return to_route(route:'produits.index');
+        return to_route(route: 'produits.index');
     }
 }
